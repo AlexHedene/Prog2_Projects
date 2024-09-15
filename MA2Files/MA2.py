@@ -90,13 +90,13 @@ def main():
     variables = {"ans": 0.0, "E": math.e, "PI": math.pi}
     # Note: The unit test file initiate variables in this way. If your implementation 
     # requires another initiation you have to update the test file accordingly.
-    init_file = 'MA2init.txt'
+    init_file = 'MA2Files\\MA2init.txt'
     lines_from_file = ''
     try:
         with open(init_file, 'r') as file:
             lines_from_file = file.readlines()
     except FileNotFoundError:
-        pass
+        print("can not read file")
 
     while True:
         if lines_from_file:
