@@ -41,25 +41,35 @@ def assignment(wtok, variables):
 def expression(wtok, variables):
     """ See syntax chart for expression"""
     result = term(wtok, variables)
-    while wtok.get_current() == '+':
+    while wtok.get_current() in ['+', '-']:
         wtok.next()
-        result = result + term(wtok, variables)
+        if wtok.get_previous() == '+': 
+            result = result + term(wtok, variables)
+        elif wtok.get_previous() == '-': 
+             result = result - term(wtok, variables)
     return result
 
 
 def term(wtok, variables):
     """ See syntax chart for term"""
     result = factor(wtok, variables)
-    while wtok.get_current() == '*': 
+    while wtok.get_current() in ['*', '/']:
         wtok.next()
-        result = result * factor(wtok, variables)
+        if wtok.get_previous() == '*': 
+            result = result*term(wtok, variables)
+        elif wtok.get_previous() == '/': 
+             result = result/term(wtok, variables) 
     return result
 
 
 def factor(wtok, variables):
     """ See syntax chart for factor"""
-    if wtok.get_current() == '(':
+    if wtok.get_current() == '-':
         wtok.next()
+        return -factor(wtok, variables)
+    
+    if wtok.get_current() == '(':
+        wtok.next()       
         result = assignment(wtok, variables)
         if wtok.get_current() != ')':
             raise SyntaxError("Expected ')'")
