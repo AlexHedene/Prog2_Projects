@@ -24,7 +24,11 @@ class SyntaxError(Exception):
     def __init__(self, arg):
         self.arg = arg
         super().__init__(self.arg)
-
+        
+class EvaluationError(Exception):
+    def __init__(self, arg):
+        self.arg = arg
+        super().__init__(self.arg)
 
 def statement(wtok, variables):
     """ See syntax chart for statement"""
@@ -35,6 +39,14 @@ def statement(wtok, variables):
 def assignment(wtok, variables):
     """ See syntax chart for assignment"""
     result = expression(wtok, variables)
+    while wtok.get_current() == "=":
+        wtok.next()
+        if wtok.is_name():
+            variables[wtok.get_current] = result
+            wtok.next()
+        else:
+            raise SyntaxError("Name of assignment need to be a character or string")
+        
     return result
 
 
@@ -67,6 +79,8 @@ def factor(wtok, variables):
     if wtok.get_current() == '-':
         wtok.next()
         return -factor(wtok, variables)
+    elif wtok.get_previous() == "/" and wtok.get_current() == '0':
+        raise EvaluationError("Division by zero")
     
     if wtok.get_current() == '(':
         wtok.next()       
@@ -134,6 +148,9 @@ def main():
 
             except TokenError as te:
                 print('*** Syntax error: Unbalanced parentheses')
+                
+            except EvaluationError as ee:
+                print("*** Evaluation error:", ee)
  
 
 
