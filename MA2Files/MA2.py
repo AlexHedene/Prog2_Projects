@@ -30,6 +30,56 @@ class EvaluationError(Exception):
         self.arg = arg
         super().__init__(self.arg)
 
+def pp(arg_list):
+    return arg_list
+
+def mean(arg_list):
+    return sum(arg_list)/len(arg_list)
+
+def log(arg):
+    if arg >= 0:
+        return math.log(arg)
+    else:
+        raise EvaluationError("Argument to log less than or equal to 0")
+
+def fac(n):
+    if n >= 0 and round(n,5).is_integer(): # Since we rarely get integers 
+        n = int(round(n,5)) # Want an integer as an answer
+        if n == 0:
+            return 1
+        else:
+            return n* fac(n-1)
+    else:
+        raise EvaluationError("Argument to fac need to be a positive integer")
+
+def fib(n:int) -> int:
+    if n >= 0 and round(n,5).is_integer():
+        n = int(round(n,5))
+        memory = {0:0, 1:1}
+        def fib_internal(n: int) -> int:
+            if n not in memory:
+                memory[n] = fib_internal(n-1) + fib_internal(n-2)
+            return memory[n]
+        return fib_internal(n)
+    else:
+        raise EvaluationError("Argument to fib need to be a positive integer")
+def arglist(wtok, variables):
+    if wtok.get_current() == '(':
+        wtok.next()
+    else:
+        raise SyntaxError("Expected '(' after function name")
+    
+    arg_list = []
+    arg_list.append(assignment(wtok, variables))
+    while wtok.get_current() == ",":
+        wtok.next()
+        arg_list.append(assignment(wtok, variables))
+    if wtok.get_current() == ")":
+        return arg_list
+    else:
+        raise SyntaxError("Expected argument list to end with ')'")
+        
+
 def statement(wtok, variables):
     """ See syntax chart for statement"""
     result = assignment(wtok, variables)
@@ -42,11 +92,15 @@ def assignment(wtok, variables):
     while wtok.get_current() == "=":
         wtok.next()
         if wtok.is_name():
-            variables[wtok.get_current] = result
+            variables[wtok.get_current()] = result
             wtok.next()
+            
+            # Keeps my vars list sorted, case insensitive
+            sorted_dict = sorted(variables.items(), key=lambda item: item[0].lower())
+            variables.clear()
+            variables.update(sorted_dict)
         else:
-            raise SyntaxError("Name of assignment need to be a character or string")
-        
+            raise SyntaxError("Name of assignment need to be a character or string")  
     return result
 
 
@@ -76,12 +130,6 @@ def term(wtok, variables):
 
 def factor(wtok, variables):
     """ See syntax chart for factor"""
-    if wtok.get_current() == '-':
-        wtok.next()
-        return -factor(wtok, variables)
-    elif wtok.get_previous() == "/" and wtok.get_current() == '0':
-        raise EvaluationError("Division by zero")
-    
     if wtok.get_current() == '(':
         wtok.next()       
         result = assignment(wtok, variables)
@@ -90,16 +138,44 @@ def factor(wtok, variables):
         else:
             wtok.next()
             
+    elif wtok.get_current() in functions_1:
+        wtok.next()
+        if wtok.get_current() == '(':
+            result = functions_1[wtok.get_previous()](factor(wtok, variables))
+        else:
+            raise SyntaxError("Expected '(' after function name")
+        
+    elif wtok.get_current() in functions_N:
+        wtok.next()
+        func_name = wtok.get_previous()
+        result = functions_N[func_name](arglist(wtok, variables))
+    
+    elif wtok.is_name(): 
+        if wtok.get_current() in variables:
+            result = variables[wtok.get_current()]
+            wtok.next()
+        else:
+             raise EvaluationError(
+            f"Undefined variable:  \"{wtok.get_current()}\" ")
     elif wtok.is_number():
         result = float(wtok.get_current())
         wtok.next()
-
+        
+    elif wtok.get_current() == '-':
+        wtok.next()
+        return -factor(wtok, variables)
+    elif wtok.get_previous() == "/" and wtok.get_current() == '0':
+        raise EvaluationError("Division by zero")
     else:
         raise SyntaxError(
-            "Expected number or '('")  
+            "Expected number, variable, function or '('")  
     return result
 
 
+# Accessable functions of the calculator
+functions_1 = {'cos': math.cos, 'sin': math.sin, 'exp': math.exp, 'log': log, 'fac':fac, 'fib': fib}
+functions_N = {'mean': mean, 'max': max, 'min': min, 'sum': sum} 
+ 
          
 def main():
     """
@@ -135,6 +211,8 @@ def main():
         if wtok.get_current() == 'quit':
             print('Bye')
             exit()
+        elif wtok.get_current() == 'vars':
+            print('\n'.join(f"{key}: {value}" for key, value in variables.items()))
         else:
             try:
                 result = statement(wtok, variables)
