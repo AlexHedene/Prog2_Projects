@@ -20,10 +20,10 @@ ans
 1 + z                             # Undefined variable
 sum(1,6,2,4,9,8)            
 1 + max(sin(x+y), cos(1), log(0.5))
-#fac(ans-1)                        # Factorial.  Note integer!
-#fac(2.5)                          # Illegal argument
-#fac(40)                           # Big number
-#2 ++ 4*ans/0                      # Syntax error before evaluation error
-#ans/0 + * x                       # Evaluation before syntax error
+fac(ans-1)                        # Factorial.  Note integer!
+fac(2.5)                          # Illegal argument
+fac(40)                           # Big number
+2 ++ 4*ans/0                      # Syntax error before evaluation error
+ans/0 + * x                       # Evaluation before syntax error
 
 # Write tests interactively now!

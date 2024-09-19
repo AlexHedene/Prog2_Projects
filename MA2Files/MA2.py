@@ -30,8 +30,6 @@ class EvaluationError(Exception):
         self.arg = arg
         super().__init__(self.arg)
 
-def pp(arg_list):
-    return arg_list
 
 def mean(arg_list):
     return sum(arg_list)/len(arg_list)
@@ -50,7 +48,7 @@ def fac(n):
         else:
             return n* fac(n-1)
     else:
-        raise EvaluationError("Argument to fac need to be a positive integer")
+        raise EvaluationError(f"Argument to fac {n}, need to be a positive integer")
 
 def fib(n:int) -> int:
     if n >= 0 and round(n,5).is_integer():
@@ -62,14 +60,15 @@ def fib(n:int) -> int:
             return memory[n]
         return fib_internal(n)
     else:
-        raise EvaluationError("Argument to fib need to be a positive integer")
+        raise EvaluationError(f"Argument to fib {n}, need to be a positive integer")
+
+
 def arglist(wtok, variables):
-    if wtok.get_current() == '(':
-        wtok.next()
-    else:
+    if  not wtok.get_current() == '(':
         raise SyntaxError("Expected '(' after function name")
-    
+        
     arg_list = []
+    wtok.next()
     arg_list.append(assignment(wtok, variables))
     while wtok.get_current() == ",":
         wtok.next()
@@ -83,7 +82,10 @@ def arglist(wtok, variables):
 def statement(wtok, variables):
     """ See syntax chart for statement"""
     result = assignment(wtok, variables)
-    return result
+    if wtok.is_at_end():
+        return result
+    else:
+        raise SyntaxError("Expected end of line")
 
 
 def assignment(wtok, variables):
@@ -137,6 +139,8 @@ def factor(wtok, variables):
             raise SyntaxError("Expected ')'")
         else:
             wtok.next()
+    elif wtok.get_previous() == "/" and wtok.get_current() == '0':
+        raise EvaluationError("Division by zero")
             
     elif wtok.get_current() in functions_1:
         wtok.next()
@@ -149,6 +153,7 @@ def factor(wtok, variables):
         wtok.next()
         func_name = wtok.get_previous()
         result = functions_N[func_name](arglist(wtok, variables))
+        wtok.next()
     
     elif wtok.is_name(): 
         if wtok.get_current() in variables:
@@ -164,11 +169,9 @@ def factor(wtok, variables):
     elif wtok.get_current() == '-':
         wtok.next()
         return -factor(wtok, variables)
-    elif wtok.get_previous() == "/" and wtok.get_current() == '0':
-        raise EvaluationError("Division by zero")
     else:
         raise SyntaxError(
-            "Expected number, variable, function or '('")  
+            "Expected number, word or '('")  
     return result
 
 
@@ -219,13 +222,13 @@ def main():
                 variables['ans'] = result
                 print('Result:', result)
 
+            except TokenError as te:
+                print('*** Syntax error: Unbalanced parentheses')
+
             except SyntaxError as se:
                 print("*** Syntax error: ", se)
                 print(
                 f"Error occurred at '{wtok.get_current()}' just after '{wtok.get_previous()}'")
-
-            except TokenError as te:
-                print('*** Syntax error: Unbalanced parentheses')
                 
             except EvaluationError as ee:
                 print("*** Evaluation error:", ee)
