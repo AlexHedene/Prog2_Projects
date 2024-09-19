@@ -15,6 +15,8 @@ However, the class SyntaxError is complete as well as handling in main
 of SyntaxError and TokenError.
 """
 
+#lOVISA WAS HERE
+
 import math
 from tokenize import TokenError  
 from MA2tokenizer import TokenizeWrapper
