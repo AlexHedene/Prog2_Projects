@@ -74,7 +74,9 @@ def largest(a: iter):
     if len(a) == 1:
         return a[0]
     else:
-        return a[0] if a[0] > largest(a[1:]) else largest(a[1:])
+        largest_value = largest(a[1:])
+        return a[0] if a[0] > largest_value else largest_value
+
 
 
 def count(x, s: list) -> int:                
@@ -158,7 +160,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    #main()
+    print(largest([(i*i) % 512 for i in range(512)]))
 
 ####################################################
 
@@ -175,7 +178,18 @@ if __name__ == "__main__":
   
   
   Exercise 9: Time for Fibonacci:
-    The t(n) function for my stationary computer is ~(7.67*10^-8)*1.618^n. 
+    Answer comes from running the code, but I will explain what the code does here too.
+    First i use the known formula t(n) = c * f(n) where f(n) is assumed to be 1.618^n.
+    I first calculate one c value for n = 39 for as c = (Actual run time)/(1.618**39) with this asumption.
+    Next I compare the actual times of fib(35) - fib(39) with a calculated value of c*1.618^n with my approximated c value.
+    If the assumption is correct, then each predicted time should be close to the actual run time.
+    When i ran this i can see that each time is correct to around a precision of max ~0.1s.
+    This is small, as the runtime for these n = 35 - 39 is several seconds.
+    By accuratly predicting the runtime using the assumed formula c*1.618^n I prove that this formula is the correct growth rate.
+    
+    I now calculate a new c value for each run of n = 35-39 and take the mean c value to calculate the next part.
+    The mean value of c one time i ran the script was c = (7.67*10^-8)
+    The t(n) function for my stationary computer is therefore ~(7.67*10^-8)*1.618^n. 
     This results in:
     t(50) = 35.96 minutes
     fib(100) = 1.92*10^6 years

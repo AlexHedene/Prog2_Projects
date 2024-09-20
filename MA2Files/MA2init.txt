@@ -27,3 +27,6 @@ fac(40)                           # Big number
 ans/0 + * x                       # Evaluation before syntax error
 
 # Write tests interactively now!
+1 = a = b = c
+vars
+3 / (log(1) + (2-2) *(30/30 - 1))

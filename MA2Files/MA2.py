@@ -41,7 +41,7 @@ def log(arg):
         raise EvaluationError("Argument to log less than or equal to 0")
 
 def fac(n):
-    if n >= 0 and round(n,5).is_integer(): # Since we rarely get integers 
+    if n >= 0 and round(n,5) % 1 == 0: # Since we rarely get integers 
         n = int(round(n,5)) # Want an integer as an answer
         if n == 0:
             return 1
@@ -51,7 +51,7 @@ def fac(n):
         raise EvaluationError(f"Argument to fac {n}, need to be a positive integer")
 
 def fib(n:int) -> int:
-    if n >= 0 and round(n,5).is_integer():
+    if n >= 0 and round(n,5) % 1 == 0:
         n = int(round(n,5))
         memory = {0:0, 1:1}
         def fib_internal(n: int) -> int:
@@ -70,9 +70,11 @@ def arglist(wtok, variables):
     arg_list = []
     wtok.next()
     arg_list.append(assignment(wtok, variables))
+
     while wtok.get_current() == ",":
         wtok.next()
         arg_list.append(assignment(wtok, variables))
+
     if wtok.get_current() == ")":
         return arg_list
     else:
@@ -91,6 +93,7 @@ def statement(wtok, variables):
 def assignment(wtok, variables):
     """ See syntax chart for assignment"""
     result = expression(wtok, variables)
+
     while wtok.get_current() == "=":
         wtok.next()
         if wtok.is_name():
@@ -121,12 +124,23 @@ def expression(wtok, variables):
 def term(wtok, variables):
     """ See syntax chart for term"""
     result = factor(wtok, variables)
-    while wtok.get_current() in ['*', '/']:
+    while wtok.get_current() in ['*', '/', '%']:
         wtok.next()
         if wtok.get_previous() == '*': 
-            result = result*term(wtok, variables)
-        elif wtok.get_previous() == '/': 
-             result = result/term(wtok, variables) 
+            result = result*factor(wtok, variables)
+        elif wtok.get_previous() == '/':
+             value = factor(wtok, variables) 
+             if abs(value) == 0:
+                raise EvaluationError("Devision by zero")
+             else:
+                result = result/value
+        elif wtok.get_previous() == '%':
+            value = factor(wtok, variables) 
+            if abs(value) == 0:
+               raise EvaluationError("Devision by zero")
+            else:
+                result = result % value
+            
     return result
 
 
@@ -139,8 +153,6 @@ def factor(wtok, variables):
             raise SyntaxError("Expected ')'")
         else:
             wtok.next()
-    elif wtok.get_previous() == "/" and wtok.get_current() == '0':
-        raise EvaluationError("Division by zero")
             
     elif wtok.get_current() in functions_1:
         wtok.next()
@@ -169,6 +181,7 @@ def factor(wtok, variables):
     elif wtok.get_current() == '-':
         wtok.next()
         return -factor(wtok, variables)
+
     else:
         raise SyntaxError(
             "Expected number, word or '('")  
