@@ -1,9 +1,9 @@
 """
 Solutions to module 2 - A calculator
-Student: 
-Mail:
-Reviewed by:
-Reviewed date:
+Student: Alexander Hedene
+Mail: alexander.hedene.3178@student.uu.se
+Reviewed by: Mattias
+Reviewed date: 20-09-2024
 """
 
 """
