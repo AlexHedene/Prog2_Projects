@@ -133,22 +133,28 @@ def main():
 
     print('\n\nCode for analysing fib\n')
     # Calculates the constant to find the time for each n
-    start_time = time.perf_counter()
-    fib(39)
-    end_time = time.perf_counter()
-    c = (end_time - start_time)/(1.618**39)
-
-    c_array = []
-    print("The next lines will compare the actual times of fib(35) - fib(39) with a calculated value of c*1.618^n")   
-    for i in range(35, 40):
-        start_time = time.perf_counter()
-        fib(i)
-        end_time = time.perf_counter()
-        print(f"Theoretical time: {(c * 1.618**i):.2e}s, Actual time: {(end_time - start_time):.2e}s")
-        c_array.append((end_time - start_time)/(1.618**i))
-    c_mean = sum(c_array)/len(c_array)
-    print(f"The avarage c value for my computer for n = 35 - 39 is {(c_mean):.2e} which results in the time function t(n) = {(c_mean):.2e}*1.618^n")
-    print(f"This results in a calculated time for fib(50) = {c_mean*1.618**50/(60):.2f} minutes, and fib(100) = {c_mean*1.618**100/(365*24*3600*10**6):.2f}*10^6 years")
+    n = 18
+    start_time1 = time.perf_counter()
+    fib(n)
+    end_time1 = time.perf_counter()
+    start_time2 = time.perf_counter()
+    fib(2*n)
+    end_time2 = time.perf_counter()
+    
+    t1 = end_time1 - start_time1
+    t2 = end_time2 - start_time2
+    
+    power = (t2/t1)**(1/n)
+    
+    c = (end_time2 - start_time2)/(1.618**(2*n))
+    
+    print(f"n = {n}:    time: {t1:.3e}s")
+    print(f"n = {2*n}:    time: {t2:.3f}s")
+    print(f"Calculated power x in t(n) = c*x^n,  x = {power:.3f}")
+    
+    print(f"Calculated c value for n = {2*n} using c = t(2*n)/(1.618^(2n)),     c = {c:.3e}")
+    print(f"This results in a calculated time for fib(50) = {c*1.618**50/(60):.2f} minutes, and fib(100) = {c*1.618**100/(365*24*3600*10**6):.2f}*10^6 years")
+    
     print('\n\nCode for analysing fib_mem\n')
     
     start_time = time.perf_counter()
@@ -160,8 +166,7 @@ def main():
 
 
 if __name__ == "__main__":
-    #main()
-    print(largest([(i*i) % 512 for i in range(512)]))
+    main()
 
 ####################################################
 
@@ -178,21 +183,18 @@ if __name__ == "__main__":
   
   
   Exercise 9: Time for Fibonacci:
-    Answer comes from running the code, but I will explain what the code does here too.
-    First i use the known formula t(n) = c * f(n) where f(n) is assumed to be 1.618^n.
-    I first calculate one c value for n = 39 for as c = (Actual run time)/(1.618**39) with this asumption.
-    Next I compare the actual times of fib(35) - fib(39) with a calculated value of c*1.618^n with my approximated c value.
-    If the assumption is correct, then each predicted time should be close to the actual run time.
-    When i ran this i can see that each time is correct to around a precision of max ~0.1s.
-    This is small, as the runtime for these n = 35 - 39 is several seconds.
-    By accuratly predicting the runtime using the assumed formula c*1.618^n I prove that this formula is the correct growth rate.
+    Answers comes from running the code, but i will explain it here too.
     
-    I now calculate a new c value for each run of n = 35-39 and take the mean c value to calculate the next part.
-    The mean value of c one time i ran the script was c = (7.67*10^-8)
-    The t(n) function for my stationary computer is therefore ~(7.67*10^-8)*1.618^n. 
+    The time for a run of the fib function can be descibed as t(n) = c * x^n
+    To find x, i will calculate t(n) =  c * x^n and t(2n) =  c * x^(2n).
+    --> t(2n)/t(n) = x^(2n-2) = x^n
+    --> x = (t(2n)/t(n))^(1/n)
+    Using n = 17 i get the value: x = 1.615 ~ 1.618
+    I now calculate c by taking c = t(2n)/1.618^(2n) = 5.476e-08
+    The t(n) function for my stationary computer is therefore ~(5.476e-08)*1.618^n. 
     This results in:
-    t(50) = 35.96 minutes
-    fib(100) = 1.92*10^6 years
+    t(50) = 25.66 minutes
+    fib(100) = 1.37*10^6 years
 
   
   
