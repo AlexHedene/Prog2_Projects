@@ -52,48 +52,149 @@ class LinkedList:
 
     # To be implemented
 
-    def length(self):          #   
-        pass
+    def length(self):
+        f = self.first
+        result = 0
+        while f is not None:
+            result += 1
+            f = f.succ
+        return result
+            
 
     def mean(self):               
         pass
 
-    def remove_last(self):       # 
-        pass
+    def remove_last(self):       #
+        f = self.first
+        if f is None:
+            raise ValueError("Cant remove last element, List is empty")
+        elif f.succ is None:
+            result = f.data
+            self.first = f.succ
+        else:
+            while f.succ.succ is not None:
+                f = f.succ
+            result = f.succ.data
+            f.succ = None
+        return result
 
-    def remove(self, x):         # 
-        pass
+    def remove(self, x):
+        f = self.first
+        
+        if f is None:
+            return False
+        
+        if f.data == x:
+            self.first = f.succ
+            return True
+       
+        while f:
+            if f.succ and f.succ.data == x:
+                f.succ = f.succ.succ
+                return True
+            f = f.succ
+        return False
+
+        
+        
 
 
-    def to_list(self):            #
-        pass
+    def to_list(self):            
 
+        def _to_list(f):
+            if f:
+                return [f.data] + _to_list(f.succ)
+            else:
+                return []
+        
+        return _to_list(self.first)
+            
+            
+            
     def remove_all(self, x):      #
-        pass
+
+        def _remove_all(x, f):
+            if not f:
+                return 0
+            if f.succ and f.succ.data == x:
+                f.succ = f.succ.succ
+                return 1 + _remove_all(x, f)
+            else:
+                return _remove_all(x, f.succ)
+                
+        if self.first and self.first.data == x: # Check if first argument is x, and remove if thats the case
+            result = _remove_all(x, self.first) + 1
+            self.first = self.first.succ
+        else:
+            result = _remove_all(x, self.first)
+        
+        return result
+
 
     def __str__(self):            #
-        pass
+        return f"({', '.join(str(node) for node in self)})"
 
-    def copy(self):               #
+    def copy2(self):               #
         result = LinkedList()
         for x in self:
             result.insert(x)
         return result
     ''' Complexity for this implementation: 
-
+        it will always need to insert at the end, and iterate over each element for every element
+        This means that it is of order n * n --> n^2
     '''
 
-    def copy(self):               # Should be more efficient
-        pass                      
+    def copy(self):
+        # Should be more efficient
+        result = LinkedList()
+        def _insert(f):
+            if f.succ:
+                _insert(f.succ)
+                result.insert(f.data)
+            else:
+                result.insert(f.data)
+        
+        if self.first:
+            _insert(self.first)
+        return result
+                
     ''' Complexity for this implementation:
-
+        Since i use the fact that the list is ordered, i make a recursice function which inserts in reverse order. 
+        This means that the insert function always insert directly, which make the insert function of order O(1).
+        The resulting complexity is therefore O(n) + O(1) = O(n) instead of O(n^2) like the iterative copy function.
     '''
+import time
+import math
 
 def main():
-    lst = LinkedList()
-    for x in [1, 1, 1, 2, 3, 3, 2, 1, 9, 7]:
-        lst.insert(x)
-    lst.print()
+    large_list1 = [i for i in range(450)]
+    large_list2 = [i for i in range(900)]
+    lst1 = LinkedList()
+    lst2 = LinkedList()
+    # lst2 = LinkedList()
+    for x in large_list1:
+        lst1.insert(x)
+    for x in large_list2:
+        lst2.insert(x)
+    start1 = time.perf_counter()
+    a = lst1.copy()
+    end1 = time.perf_counter()
+    start2 = time.perf_counter()
+    a = lst2.copy()
+    end2 = time.perf_counter()
+    order = math.log2((end2-start2)/(end1-start1))
+    print(order)
+    
+    # lst.print()
+    # print(lst.remove(3))
+    # print(lst.remove(3))
+    # print(lst.remove(3))
+    # lst.print()
+    # try:
+    #     print(lst2.remove(3))
+    # except ValueError as ve:
+    #     print(ve)
+
 
     # Test code:
 

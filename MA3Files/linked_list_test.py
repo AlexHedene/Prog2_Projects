@@ -35,13 +35,22 @@ class Test(unittest.TestCase):
         for x in [3, 1, 2, 6, 1]:
             lst.insert(x)
 
-        self.assertEqual(lst.remove(0), False)
+        self.assertEqual(lst.remove(0), False) # Remove first element
+        lst.print()
         self.assertEqual(lst.remove(1), True)
+        lst.print() 
+        self.assertEqual(lst.remove(3), True) # Remove element in the middle
+        lst.print()
+        self.assertEqual(lst.remove(6), True) # Remove last element
+        lst.print()
         self.assertEqual(lst.remove(1), True)
-        self.assertEqual(lst.remove(3), True)
-        self.assertEqual(lst.remove(3), False)
-        self.assertEqual(lst.remove(2), True)
-        self.assertEqual(lst.remove(2), False)
+        lst.print() 
+        self.assertEqual(lst.remove(3), False) # Remove non-existet node
+        lst.print()
+        self.assertEqual(lst.remove(2), True)  # Removes first and only element
+        lst.print()
+        self.assertEqual(lst.remove(2), False) # Romove a value from an empty list
+        lst.print()
 
     def test_to_list(self): #
         lst = LinkedList()
@@ -96,5 +105,20 @@ class Test(unittest.TestCase):
         self.assertEqual(orig_node, copy_node) #Original and copy of different length
 
 
+
 if __name__ == "__main__":
-    unittest.main()
+    suite = unittest.TestSuite()
+    suite.addTests([
+        Test('test_remove_last'),
+        Test('test_length'),
+        Test('test_remove'),
+        Test('test_to_list'),
+        Test('test_remove_all'),
+        Test('test___str__'),
+        Test('test_copy')
+    ])
+
+    # Run the test suite
+    runner = unittest.TextTestRunner()
+    runner.run(suite)
+    #unittest.main()
