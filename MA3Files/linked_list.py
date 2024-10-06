@@ -141,7 +141,7 @@ class LinkedList:
         return result
     ''' Complexity for this implementation: 
         it will always need to insert at the end, and iterate over each element for every element
-        This means that it is of order n * n --> n^2
+        This means that it is of order O(n) * O(n) --> O(n^2)
     '''
 
     def copy(self):

@@ -30,8 +30,13 @@ class Test(unittest.TestCase):
 
     def test_remove_BST(self):
         bst = BST()
+        bst2 = BST()
         for x in [10, 5, 3, 8, 1, 4, 6, 9, 2, 7]:
             bst.insert(x)
+            bst2.insert(x)
+        bst2.remove(10)
+        self.assertEqual(str(bst2), '<1, 2, 3, 4, 5, 6, 7, 8, 9>') # Remove root, i.e. Extraction of nodes with two children with children
+                
         bst.remove(2)
         self.assertEqual(str(bst), '<1, 3, 4, 5, 6, 7, 8, 9, 10>')
         bst.remove(1)
@@ -46,13 +51,18 @@ class Test(unittest.TestCase):
         self.assertEqual(str(bst), '<3, 7, 8, 9, 10>')
         bst.remove(3)
         self.assertEqual(str(bst), '<7, 8, 9, 10>')
+        bst.remove(8)                        # Extraction of node with two childless children
+        self.assertEqual(str(bst), '<7, 9, 10>')
         bst.remove(7)
-        self.assertEqual(str(bst), '<8, 9, 10>')
-        bst.remove(8)
         self.assertEqual(str(bst), '<9, 10>')
-        bst.remove(9)
+        bst.remove(9)                        # Exract from tree with empty right subtree
         self.assertEqual(str(bst), '<10>')
-        bst.remove(10)
+        bst.insert(11)
+        bst.remove(11)                        
+        self.assertEqual(str(bst), '<10>')   # Extract from tree with empty left subtree
+        bst.remove(10)                       #Extract from tree with single value
+        self.assertEqual(str(bst), '<>') 
+        bst.remove(7)                        # Extract from empty tree
         self.assertEqual(str(bst), '<>')
 
     def test___str__(self): #
@@ -81,3 +91,9 @@ class Test(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+    # suite = unittest.TestSuite()
+    # suite.addTests([
+    #     Test('test_remove_BST')
+    # ])
+    # runner = unittest.TextTestRunner()
+    # runner.run(suite)

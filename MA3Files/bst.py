@@ -55,7 +55,7 @@ class BST:
             print(r.key, end=' ')
             self._print(r.right)
 
-    def contains(self, k): #
+    def contains1(self, k): #
         n = self.root
         while n and n.key != k:
             if k < n.key:
@@ -63,6 +63,22 @@ class BST:
             else:
                 n = n.right
         return n is not None
+    
+    def contains(self, k):
+        
+        def _contains(k, r):
+            if r:
+                if r.key == k:
+                    return True
+                elif k < r.key:
+                    return _contains(k,r.left)
+                else:
+                    return _contains(k, r.right)
+            else:
+                return False
+        
+        return _contains(k, self.root)
+            
 
     def size(self):
         return self._size(self.root)
@@ -78,7 +94,13 @@ class BST:
 #
 
     def height(self):                 #            
-        pass
+        
+        def _height(r):
+            if r:
+                return 1 + max(_height(r.left), _height(r.right))
+            else:
+                return 0
+        return _height(self.root)
 
     def remove(self, key): #
         self.root = self._remove(self.root, key)
@@ -87,10 +109,10 @@ class BST:
         if r is None:
             return None
         elif k < r.key:
-            pass
+            r.left = self._remove(r.left, k)
             # r.left = left subtree with k removed
         elif k > r.key:
-            pass
+            r.right = self._remove(r.right, k)
             # r.right =  right subtree with k removed
         else:  # This is the key to be removed
             if r.left is None:     # Easy case
@@ -98,20 +120,47 @@ class BST:
             elif r.right is None:  # Also easy case
                 return r.left
             else:  # This is the tricky case.
-                pass
+                min_node = r.right
+                while min_node.left.left:
+                    min_node = min_node.left
+                r.key = min_node.left.key
+                min_node.left = None
                 # Find the smallest key in the right subtree
                 # Put that key in this node
                 # Remove that key from the right subtree
         return r  # Remember this! It applies to some of the cases above
 
     def __str__(self):                #            
-        pass
+        return f"<{', '.join(str(node) for node in self)}>"
 
     def to_list(self):                      #      
-        pass
+        # The complexity is O(n) since it visits each element once, and append has complexity O(1) --> O(n) + O(1) = O(n)
+        result = []
+        def _to_list(r):
+            if r:
+                _to_list(r.left)
+                result.append(r.key)  # Here the order can be changed to perorder/postorder also
+                _to_list(r.right)
+            else:
+                return []
+        _to_list(self.root)
+        return result
 
-    def to_LinkedList(self):                 #     
-        pass
+    def to_LinkedList(self):
+        # The complexity is O(n) from visiting every element. For the insert method this is normally O(n) too.
+        # Since i choose to create the linked list in reverse, and start insrting numbers from the three from right to left
+        # I will always insert the biggest number first, which makes the insert method a O(1) * n in complexity.
+        # The resulting complexity is therefore O(n) + O(n) = O(n)
+        result = LinkedList()
+        
+        def _to_LinkedList(r):
+            if r:
+                _to_LinkedList(r.right)
+                result.insert(r.key)
+                _to_LinkedList(r.left)
+        _to_LinkedList(self.root)
+        
+        return result
 
 
 def random_tree(n):                               # Useful
@@ -120,13 +169,13 @@ def random_tree(n):                               # Useful
 
 def main():
     t = BST()
-    for x in [4, 1, 3, 6, 7, 1, 1, 5, 8]:
+    for x in [12, 5, 2, 8, 7, 23, 17, 13, 21, 36, 42, 14]: #[4, 1, 3, 6, 7, 1, 1, 5, 8]:
         t.insert(x)
-    t.print()
-    print()
-
+    print(t)
+    print(t.to_LinkedList())
     print('size  : ', t.size())
-    for k in [0, 1, 2, 5, 9]:
+    print('height  : ', t.height())
+    for k in [13, 21, 12, 7, 2, 17, 42, 43, 14]:
         print(f"contains({k}): {t.contains(k)}")
 
 
@@ -138,10 +187,10 @@ if __name__ == "__main__":
 What is the generator good for?
 ==============================
 
-1. computing size?
-2. computing height?
-3. contains?
-4. insert?
-5. remove?
+1. computing size? Yes
+2. computing height? No
+3. contains? Yes
+4. insert? No
+5. remove? No
 
 """
