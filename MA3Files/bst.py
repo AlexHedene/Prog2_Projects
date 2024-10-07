@@ -1,9 +1,9 @@
 """ bst.py
 
-Student:
-Mail:
-Reviewed by:
-Date reviewed:
+Student: Alexander Hedene
+Mail: alexander.hedene.3178@student.uu.se
+Reviewed by: David
+Date reviewed: 2024-10-07
 """
 
 
@@ -187,10 +187,10 @@ if __name__ == "__main__":
 What is the generator good for?
 ==============================
 
-1. computing size? Yes
-2. computing height? No
-3. contains? Yes
-4. insert? No
-5. remove? No
+1. computing size? Yes - only need to know number of nodes
+2. computing height? No - The concept of height is gone using the generator
+3. contains? Yes - Iterate trough the nodes, could be better optimized though
+4. insert? No - Need to find a specific node and choose how to treverse the tree
+5. remove? No -||-
 
 """

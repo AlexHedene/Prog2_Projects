@@ -1,9 +1,9 @@
 """ linked_list.py
 
-Student:
-Mail:
-Reviewed by:
-Date reviewed:
+Student: Alexander Hedene
+Mail: alexander.hedene.3178@student.uu.se
+Reviewed by: David
+Date reviewed: 2024-10-07
 """
 
 
@@ -177,13 +177,13 @@ def main():
     for x in large_list2:
         lst2.insert(x)
     start1 = time.perf_counter()
-    a = lst1.copy()
+    lst1.copy()
     end1 = time.perf_counter()
     start2 = time.perf_counter()
-    a = lst2.copy()
+    lst2.copy()
     end2 = time.perf_counter()
     order = math.log2((end2-start2)/(end1-start1))
-    print(order)
+    print("Order of new copy function", order)
     
     # lst.print()
     # print(lst.remove(3))
