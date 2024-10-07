@@ -160,8 +160,8 @@ def main():
 
 
 if __name__ == "__main__":
-    #main()
-    print(largest([(i*i) % 512 for i in range(512)]))
+    main()
+    #print(largest([(i*i) % 512 for i in range(512)]))
 
 ####################################################
 
