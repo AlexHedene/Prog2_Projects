@@ -36,21 +36,13 @@ class Test(unittest.TestCase):
             lst.insert(x)
 
         self.assertEqual(lst.remove(0), False) # Remove first element
-        lst.print()
         self.assertEqual(lst.remove(1), True)
-        lst.print() 
         self.assertEqual(lst.remove(3), True) # Remove element in the middle
-        lst.print()
         self.assertEqual(lst.remove(6), True) # Remove last element
-        lst.print()
-        self.assertEqual(lst.remove(1), True)
-        lst.print() 
+        self.assertEqual(lst.remove(1), True) 
         self.assertEqual(lst.remove(3), False) # Remove non-existet node
-        lst.print()
         self.assertEqual(lst.remove(2), True)  # Removes first and only element
-        lst.print()
         self.assertEqual(lst.remove(2), False) # Romove a value from an empty list
-        lst.print()
 
     def test_to_list(self): #
         lst = LinkedList()
