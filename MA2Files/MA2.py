@@ -35,7 +35,7 @@ def mean(arg_list):
     return sum(arg_list)/len(arg_list)
 
 def log(arg):
-    if arg >= 0:
+    if arg > 0:
         return math.log(arg)
     else:
         raise EvaluationError("Argument to log less than or equal to 0")
