@@ -161,7 +161,7 @@ class LinkedList:
     ''' Complexity for this implementation:
         Since i use the fact that the list is ordered, i make a recursice function which inserts in reverse order. 
         This means that the insert function always insert directly, which make the insert function of order O(1).
-        The resulting complexity is therefore O(n) + O(1) = O(n) instead of O(n^2) like the iterative copy function.
+        The resulting complexity is therefore O(n) + O(1)*n = O(n) instead of O(n^2) like the iterative copy function.
     '''
 import time
 import math
