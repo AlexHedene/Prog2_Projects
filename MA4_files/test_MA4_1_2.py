@@ -31,7 +31,7 @@ class Test(unittest.TestCase):
         act_vol = hypersphere_exact(n, d)
         self.assertAlmostEqual(act_vol, 1.8841038793898994)
 
-        file_path = "MA4_1_2.py"  # Replace with your actual file path
+        file_path = "MA4_files/MA4_1_2.py"  # Replace with your actual file path
         found_higher_order = check_higher_order_functions(file_path)
         self.assertEqual(found_higher_order, True)
 
