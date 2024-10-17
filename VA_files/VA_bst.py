@@ -7,6 +7,7 @@ Mail: Alex.hedene@gmail.com
 
 import random
 import math
+import numpy as np
 class BST:
 
     class Node:
@@ -99,8 +100,8 @@ def random_tree(n):                               # Useful
 def main():
     height_list = []
     ipl_list = []
-    j = 200
-    for k in range(1,6):
+    j = 20
+    for k in range(1,10):
         print(k)
         ipl_list_k = []
         height_list_k = []
@@ -111,10 +112,11 @@ def main():
             ipl_list_k.append(t.ipl())
         height_list.append(sum(height_list_k)/j/math.log(n))
         ipl_list.append(sum(ipl_list_k)/j/n)
+    slope,_ = np.polyfit(np.arange(1,k+1), np.array(ipl_list), 1)
     print("All values of IPL")
     print(ipl_list)
-    print("Difference between each value, this should in theory be 1.39")    
-    print([ipl_list[i+1] - ipl_list[i] for i in range(len(ipl_list)-1)])
+    print(f"Calculated slope: {round(slope,3)}, Theorethical value: 1.39")
+    print()
     print("Each height devided by log(n). This should be constant if height follows O(log(n))")
     print(height_list)
     print("The hieght needs to find one node, which is O(log(n)). IPL needs to find the height for every node which is n*O(log(n)) = O(nlog(n))")

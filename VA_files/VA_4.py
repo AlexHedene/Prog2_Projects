@@ -1,7 +1,7 @@
 """
 Solutions to module VA 4
 
-Student:
+Student: Alexander Hedene
 Mail:
 """
 #!/usr/bin/env python3

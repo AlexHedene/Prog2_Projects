@@ -32,7 +32,7 @@ def hypersphere_exact(n,d):
      
 def main():
     n = 10000
-    d = 3
+    d = 11
     print(f"My version: {sphere_volume(n,d)}, Actual: {hypersphere_exact(n,d)}")
     #print(hypersphere_exact(4,1))
     #sphere_volume(n,d)

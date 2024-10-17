@@ -4,29 +4,9 @@ Student:
 Mail:
 """
 
-def exchange(aa, coins) -> list: 
-    """ Count possible way to exchange a with the coins in coins. Use memoization"""
+def exchange(a, coins) -> int:
+    """Count the possible ways to exchange 'a' with the coins in 'coins'. Use memoization."""
     memo = {}
-    def _exchange(a, coins):
-        if a == 0:
-            return 1
-        elif a < 0 or len(coins) == 0:
-            return 0
-        else:
-            if a in memo.keys():
-                print(a)
-                print(memo[a])
-                return memo[a]
-            else:
-                print(a)
-                print(coins)
-                memo[a] = _exchange(a, coins[1:]) + _exchange(a-coins[0], coins)
-    _exchange(aa,coins)
-    return memo[aa]
-
-def exchange2(a, coins) -> int:
-    """Count the possible ways to exchange 'aa' with the coins in 'coins'. Use memoization."""
-    memo = {}  
 
     def _exchange(a, coins):
         if a == 0: 
@@ -57,7 +37,7 @@ def zippa(l1: list, l2: list) -> list:
 
 def main():
     print('\nCode that demonstates my implementations\n')
-    print(exchange2(1000,[1,5,10,50,100]))
+    print(exchange(993,[1,5,10,50,100]))
 
 
 if __name__ == "__main__":
