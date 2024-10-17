@@ -17,7 +17,7 @@ of SyntaxError and TokenError.
 
 import math
 from tokenize import TokenError  
-from VA_files.MA2tokenizer import TokenizeWrapper
+from MA2tokenizer import TokenizeWrapper
 
 
 class SyntaxError(Exception):
@@ -36,7 +36,7 @@ def mean(arg_list):
 
 def std(arg_list):
     Mean = mean(arg_list)
-    return (sum(lambda x, y: x + y, map(lambda x: (x-Mean)**2, arg_list)))**0.5
+    return (sum(map(lambda x: (x-Mean)**2, arg_list)))**0.5
 
 def log(arg):
     if arg > 0:
@@ -101,8 +101,11 @@ def assignment(wtok, variables):
     while wtok.get_current() == "=":
         wtok.next()
         if wtok.is_name():
-            variables[wtok.get_current()] = result
-            wtok.next()
+            if wtok.get_current() == "PI" or wtok.get_current() == "E":
+                raise SyntaxError("Cant change value of PI or E")
+            else:  
+                variables[wtok.get_current()] = result
+                wtok.next()
             
             # Keeps my vars list sorted, case insensitive
             sorted_dict = sorted(variables.items(), key=lambda item: item[0].lower())
@@ -192,8 +195,8 @@ def factor(wtok, variables):
 
 
 # Accessable functions of the calculator
-functions_1 = {'cos': math.cos, 'sin': math.sin, 'exp': math.exp, 'log': log, 'fac':fac, 'fib': fib, "std": std}
-functions_N = {'mean': mean, 'max': max, 'min': min, 'sum': sum} 
+functions_1 = {'cos': math.cos, 'sin': math.sin, 'exp': math.exp, 'log': log, 'fac':fac, 'fib': fib}
+functions_N = {'mean': mean, 'max': max, 'min': min, 'sum': sum, "std": std} 
  
          
 def main():

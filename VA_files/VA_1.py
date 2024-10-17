@@ -4,16 +4,44 @@ Student:
 Mail:
 """
 
-def exchange(a, coins) -> list: 
+def exchange(aa, coins) -> list: 
     """ Count possible way to exchange a with the coins in coins. Use memoization"""
-    memo = [[None for _ in range(a+1)] for _ in range(len(coins)+1)]
-    def exchange(a, coins):
+    memo = {}
+    def _exchange(a, coins):
         if a == 0:
             return 1
         elif a < 0 or len(coins) == 0:
             return 0
         else:
-            return exchange(a, coins[1:]) + exchange(a-coins[0], coins)
+            if a in memo.keys():
+                print(a)
+                print(memo[a])
+                return memo[a]
+            else:
+                print(a)
+                print(coins)
+                memo[a] = _exchange(a, coins[1:]) + _exchange(a-coins[0], coins)
+    _exchange(aa,coins)
+    return memo[aa]
+
+def exchange2(a, coins) -> int:
+    """Count the possible ways to exchange 'aa' with the coins in 'coins'. Use memoization."""
+    memo = {}  
+
+    def _exchange(a, coins):
+        if a == 0: 
+            return 1
+        elif a < 0 or len(coins) == 0:  
+            return 0
+        else:
+            if (a, len(coins)) in memo:  
+                return memo[(a, len(coins))]
+
+            memo[(a, len(coins))] = _exchange(a, coins[1:]) + _exchange(a - coins[0], coins)
+
+            return memo[(a, len(coins))] 
+
+    return _exchange(a, coins)
 
 def zippa(l1: list, l2: list) -> list: 
     """ Returns a new list from the elements in l1 and l2 like the zip function"""
@@ -29,10 +57,7 @@ def zippa(l1: list, l2: list) -> list:
 
 def main():
     print('\nCode that demonstates my implementations\n')
-    l1 = [1,2,3]
-    l2 = zippa(l1, [])
-    l1.append(4)
-    print(l2)
+    print(exchange2(1000,[1,5,10,50,100]))
 
 
 if __name__ == "__main__":

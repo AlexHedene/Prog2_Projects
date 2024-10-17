@@ -12,7 +12,7 @@ class LinkedList:
         def __init__(self, data, succ):
             self.data = data
             self.succ = succ
-
+            
     def __init__(self):
         self.first = None
 
@@ -57,13 +57,24 @@ class Person:
 
     def __str__(self):
         return f"{self.name}:{self.pnr}"
-
+    
+    def __lt__(self, other):
+        return self.name < other.name
+        
+    def __le__(self, other):
+        return self.name <= other.name
+    
+    def __eq__(self, other):
+        return self.name == other.name
 
 def main():
-    lst = LinkedList()
-    for x in [1, 1, 1, 2, 3, 3, 2, 1, 9, 7]:
-        lst.insert(x)
-    lst.print()
+    plst = LinkedList()
+    p = Person('Jonas', 101010)
+    plst.insert(p)
+    plst.print()
+    p1 = Person('Jona', 1010)
+    plst.insert(p1)
+    plst.print()
 
 
 if __name__ == '__main__':

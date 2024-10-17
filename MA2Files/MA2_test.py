@@ -10,7 +10,7 @@ Remember to uncomment them before the final presentation!
 
 import unittest
 import math
-from MA2 import *
+from VA_files.MA2 import *
 
 
 variables_init = {"ans": 0.0, "E": math.e, "PI": math.pi}

@@ -11,7 +11,7 @@ expressions.
 
 """
 
-from MA2tokenizer import TokenizeWrapper
+from VA_files.MA2tokenizer import TokenizeWrapper
 
 def expression(wtok):
     result = term(wtok)
