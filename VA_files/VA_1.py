@@ -37,7 +37,7 @@ def zippa(l1: list, l2: list) -> list:
 
 def main():
     print('\nCode that demonstates my implementations\n')
-    print(exchange(993,[1,5,10,50,100]))
+    print(exchange(991,[1,5,10,100,200]))
 
 
 if __name__ == "__main__":
