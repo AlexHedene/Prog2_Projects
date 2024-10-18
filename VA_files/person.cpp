@@ -30,7 +30,7 @@ int Person::getDecades(){
 	}
 
 int Person::rec_fib(int n){
-	if (n <= 1) return 1;
+	if (n <= 1) return n;
 	return rec_fib(n-1) + rec_fib(n-2);
 	}
 

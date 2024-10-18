@@ -39,6 +39,10 @@ class LinkedList:
                 f = f.succ
             f.succ = self.Node(x, f.succ)
 
+    def __str__(self):
+        lst = [str(i) for i in self]
+        return f"({', '.join(lst)})"
+
     def print(self):
         print('(', end='')
         f = self.first
@@ -69,10 +73,14 @@ class Person:
 
 def main():
     plst = LinkedList()
-    p = Person('Jonas', 101010)
+    p = Person('A',1)
     plst.insert(p)
     plst.print()
-    p1 = Person('Jona', 1010)
+    p2 = Person('C',3)
+    plst.insert(p2)
+    print(plst)
+    p1 = Person('B',2)
+    
     plst.insert(p1)
     plst.print()
 

@@ -101,7 +101,7 @@ def main():
     height_list = []
     ipl_list = []
     j = 20
-    for k in range(1,10):
+    for k in range(1,8):
         print(k)
         ipl_list_k = []
         height_list_k = []
@@ -131,8 +131,14 @@ if __name__ == "__main__":
 Results for ipl of random trees
 ===============================
 How well does that agree with the theory?
+The theory says: ipl(n) =  c*n*log(n). Then ipl(n)/n = c*log(n). If i calculate ipl(n)/n for 2^k and 2^(k+1) and tkae the differense:
+c*log(2^(k+1)) - c*log(2^k) = c(k+1) - ck = c:
+I did this for several n: 1-9 20 times each and calculate the slope:
+It agrees very well with theory. I found the value of c in c*n*log(n) to be c = 1.401, and theorethical value is 1.39.
+
 
 What can you guess about the
 height?
+The hieght needs to find one node, which is O(log(n)). IPL needs to find the height for every node which is n*O(log(n)) = O(nlog(n))
 
 """
