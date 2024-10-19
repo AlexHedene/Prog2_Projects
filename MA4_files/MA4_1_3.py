@@ -31,7 +31,6 @@ def hypersphere_exact(n,d):
     return (m.pi**(d/2)/m.gamma(d/2+1)*rad**d)
 
 def sphere_volume_parallel1(n,d,np):
-    rad = 1
     with future.ProcessPoolExecutor(max_workers=np) as executor:
         futures = [executor.submit(sphere_volume, n // np, d) for _ in range(np)]
         
@@ -40,7 +39,10 @@ def sphere_volume_parallel1(n,d,np):
 
 # parallel code - parallelize actual computations by splitting data
 def sphere_volume_parallel2(n,d,np):
-     return 
+    with future.ProcessPoolExecutor(max_workers=np) as executor:
+        futures = executor.map(sphere_volume, np*[n//np], np*[d]) 
+        results = sum(list(futures))
+    return results/np 
 
 def main():
     # part 1 -- parallelization of a for loop among 10 processes 
@@ -56,10 +58,15 @@ def main():
     start_p_part1 = t.perf_counter()
     res_p1 = sphere_volume_parallel1(n*10,d,10)
     end_p_part1 = t.perf_counter()
+
+    start_p_part2 = t.perf_counter()
+    res_p2 = sphere_volume_parallel2(n*10,d,10)
+    end_p_part2 = t.perf_counter()
     
     print(f"No parallel computing: time = {end_no_p_part1 - start_no_p_part1}")
     print(f"Parallel computing 1: time = {end_p_part1 - start_p_part1}")
-    print(f"Result with no p: {res_no_p/10},  result with p: {res_p1}, actual volume: {hypersphere_exact(10*n,d)}")
+    print(f"Parallel computing 2: time = {end_p_part2 - start_p_part2}")
+    print(f"Result with no p: {res_no_p/10},  result with p1: {res_p1}, result with p2: {res_p2}, actual volume: {hypersphere_exact(10*n,d)}")
     
 if __name__ == '__main__':
 	main()
