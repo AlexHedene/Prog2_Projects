@@ -15,6 +15,8 @@ import numpy
 import functools
 
 
+def pc():
+    return t.perf_counter()
 
 def sphere_volume(n, d):
     rad = 1
@@ -46,22 +48,22 @@ def sphere_volume_parallel2(n,d,np):
 
 def main():
     # part 1 -- parallelization of a for loop among 10 processes 
-    n = 100000
+    n = 1000000
     d = 11
     res_no_p = 0
     
-    start_no_p_part1 = t.perf_counter()
+    start_no_p_part1 = pc()
     for _ in range (10):
         res_no_p += sphere_volume(n,d)
-    end_no_p_part1 = t.perf_counter()
+    end_no_p_part1 = pc()
        
-    start_p_part1 = t.perf_counter()
+    start_p_part1 = pc()
     res_p1 = sphere_volume_parallel1(n*10,d,10)
-    end_p_part1 = t.perf_counter()
+    end_p_part1 = pc()
 
-    start_p_part2 = t.perf_counter()
+    start_p_part2 = pc()
     res_p2 = sphere_volume_parallel2(n*10,d,10)
-    end_p_part2 = t.perf_counter()
+    end_p_part2 = pc()
     
     print(f"No parallel computing: time = {end_no_p_part1 - start_no_p_part1}")
     print(f"Parallel computing 1: time = {end_p_part1 - start_p_part1}")

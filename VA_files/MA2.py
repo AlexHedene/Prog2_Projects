@@ -1,4 +1,12 @@
 """
+Solutions to module 2 VA
+Student: Alexander Hedene
+Mail: alexander.hedene.3178@student.uu.se
+Reviewed by Andrey
+Reviewed date: 19-10-2024
+"""
+
+"""
 Solutions to module 2 - A calculator
 Student: Alexander Hedene
 Mail: alexander.hedene.3178@student.uu.se

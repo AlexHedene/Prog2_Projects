@@ -135,10 +135,11 @@ The theory says: ipl(n) =  c*n*log(n). Then ipl(n)/n = c*log(n). If i calculate 
 c*log(2^(k+1)) - c*log(2^k) = c(k+1) - ck = c:
 I did this for several n: 1-9 20 times each and calculate the slope:
 It agrees very well with theory. I found the value of c in c*n*log(n) to be c = 1.401, and theorethical value is 1.39.
+If you run the code you will calculate this value, and plot all ipl.
 
 
 What can you guess about the
 height?
 The hieght needs to find one node, which is O(log(n)). IPL needs to find the height for every node which is n*O(log(n)) = O(nlog(n))
-
+If you run the code the values of the height/log(n) will be printed
 """

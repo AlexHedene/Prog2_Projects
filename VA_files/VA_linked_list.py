@@ -1,8 +1,8 @@
 """
 Solutions to module VA linked lists
 
-Student:
-Mail:
+Student: Alexander Hedene   
+Mail: alex.hedene@gmail.com
 """
 
 
